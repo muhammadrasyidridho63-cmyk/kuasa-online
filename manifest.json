@@ -1,0 +1,22 @@
+{
+  "name": "E-KUASA Pengadilan Negeri",
+  "short_name": "E-KUASA",
+  "description": "Sistem Informasi Pendaftaran & Legalisasi Surat Kuasa Elektronik Pengadilan Negeri",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#064e3b",
+  "theme_color": "#064e3b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://lh3.googleusercontent.com/aida/ALJJyrCNqUyw529TjOXJoGGL7tvax3yqx2dmHu92kY7KFugFLvKrprMUZXxhPUfU68jukWY7gpSmZqPdGeEFef0OErfwLgU5DJnTvsT174yKkNt2YPwjAXgoAPyGhr9gZOfUPkdSWvhZ3NXOT-81a67sc-HlyQkXvODK29wdRF8M4sz6Z7yqqMmKd8Ct4lHAbKbBlY_lMS-su2-HcQKOJVjyRfpUsXpZnHs5uqVeoruYOVSf",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://lh3.googleusercontent.com/aida/ALJJyrCNqUyw529TjOXJoGGL7tvax3yqx2dmHu92kY7KFugFLvKrprMUZXxhPUfU68jukWY7gpSmZqPdGeEFef0OErfwLgU5DJnTvsT174yKkNt2YPwjAXgoAPyGhr9gZOfUPkdSWvhZ3NXOT-81a67sc-HlyQkXvODK29wdRF8M4sz6Z7yqqMmKd8Ct4lHAbKbBlY_lMS-su2-HcQKOJVjyRfpUsXpZnHs5uqVeoruYOVSf",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

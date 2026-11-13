@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "border-subtle": "#E2E8F0", "status-pending-bg": "#FEF3C7", "surface-container": "#eceef0", "on-secondary-fixed": "#131b2e", "status-sah-bg": "#DCFCE7", "on-surface": "#191c1e", "surface": "#f7f9fb", "tertiary-fixed": "#ffdcc3", "seal-gold": "#F59E0B", "primary-container": "#064e3b", "on-tertiary-container": "#ff9939", "on-primary-fixed": "#002117", "surface-bright": "#f7f9fb", "tertiary-fixed-dim": "#ffb77d", "on-primary-container": "#80bea6", "outline-variant": "#bfc9c3", "status-sah-border": "#86EFAC", "status-pending-border": "#FCD34D", "inverse-primary": "#95d3ba", "surface-container-highest": "#e0e3e5", "inverse-surface": "#2d3133", "secondary-fixed": "#dae2fd", "on-error": "#ffffff", "secondary": "#565e74", "error": "#ba1a1a", "background": "#f7f9fb", "status-sah-text": "#166534", "status-revision-border": "#FCA5A5", "on-secondary-fixed-variant": "#3f465c", "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#bec6e0", "on-primary-fixed-variant": "#0b513d", "on-secondary": "#ffffff", "surface-container-low": "#f2f4f6", "on-primary": "#ffffff", "on-tertiary-fixed": "#2f1500", "surface-dim": "#d8dadc", "on-tertiary": "#ffffff", "primary": "#003527", "outline": "#707974", "surface-variant": "#e0e3e5", "status-revision-bg": "#FEE2E2", "on-secondary-container": "#5c647a", "surface-tint": "#2b6954", "on-surface-variant": "#404944", "on-error-container": "#93000a", "secondary-container": "#dae2fd", "on-background": "#191c1e", "surface-white": "#FFFFFF", "on-tertiary-fixed-variant": "#6e3900", "error-container": "#ffdad6", "tertiary": "#4a2400", "tertiary-container": "#6a3700", "primary-fixed-dim": "#95d3ba", "primary-fixed": "#b0f0d6", "inverse-on-surface": "#eff1f3", "surface-container-high": "#e6e8ea", "status-revision-text": "#991B1B", "status-pending-text": "#92400E" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "2rem", "space-2xl": "3rem", "space-sm": "0.5rem", "gutter-mobile": "1rem", "space-lg": "1.5rem", "space-md": "1rem", "space-xs": "0.25rem", "margin-mobile": "1rem", "gutter": "1.5rem", "space-xl": "2rem" }, "fontFamily": { "headline-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "code-register": ["Space Mono"], "display-hero-mobile": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, "fontSize": { "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}], "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}], "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}], "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "headline-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}], "display-hero": ["36px", {"lineHeight": "44px", "fontWeight": "700"}], "code-register": ["15px", {"lineHeight": "20px", "fontWeight": "700"}], "display-hero-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}], "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "600"}], "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="p-space-lg flex items-center gap-space-sm"><img alt="Logo E-KUASA Pengadilan Negeri" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCNqUyw529TjOXJoGGL7tvax3yqx2dmHu92kY7KFugFLvKrprMUZXxhPUfU68jukWY7gpSmZqPdGeEFef0OErfwLgU5DJnTvsT174yKkNt2YPwjAXgoAPyGhr9gZOfUPkdSWvhZ3NXOT-81a67sc-HlyQkXvODK29wdRF8M4sz6Z7yqqMmKd8Ct4lHAbKbBlY_lMS-su2-HcQKOJVjyRfpUsXpZnHs5uqVeoruYOVSf"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-primary leading-tight">PENGADILAN NEGERI</span><span class="font-label-sm text-label-sm text-secondary font-semibold uppercase">PTSP HUKUM • E-KUASA</span></div></div><div class="px-space-lg py-space-xs"><div class="rounded-lg bg-surface-container-low p-space-sm flex items-center justify-between font-label-sm text-label-sm"><span class="text-secondary">Status Sistem:</span><span class="inline-flex items-center gap-1 font-semibold text-status-sah-text"><span class="h-2 w-2 rounded-full bg-status-sah-border animate-pulse"></span>Online TTE Aktif</span></div></div><nav class="flex-1 px-space-md py-space-md space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-label-md rounded-lg"><div class="px-space-sm pt-space-xs pb-1 font-label-sm text-label-sm text-outline uppercase tracking-wider">Layanan Pemohon</div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="portal-publik" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">description</span><span>Portal Publik</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="lacak-dan-unduh" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">find_in_page</span><span>Lacak &amp; Unduh</span></div></a><div class="px-space-sm pt-space-md pb-1 font-label-sm text-label-sm text-outline uppercase tracking-wider">Kepaniteraan Hukum</div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="meja-verifikator-ptsp" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">fact_check</span><span>Meja Verifikator PTSP</span></div><span class="px-1.5 py-0.5 rounded-full text-label-sm font-label-sm bg-status-pending-bg text-status-pending-text border border-status-pending-border">7</span></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-all bg-primary-container text-on-primary font-label-md rounded-lg" data-path="otorisasi-panitera" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">verified_user</span><span>Otorisasi Panitera</span></div><span class="px-1.5 py-0.5 rounded-full text-label-sm font-label-sm bg-status-revision-bg text-status-revision-text border border-status-revision-border">3</span></a><div class="px-space-sm pt-space-md pb-1 font-label-sm text-label-sm text-outline uppercase tracking-wider">Administrasi &amp; Laporan</div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="pengaturan-master" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">tune</span><span>Pengaturan Master</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="buku-register-dan-statistik" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">monitoring</span><span>Buku Register &amp; Statistik</span></div></a></nav><div class="p-space-md bg-surface-container-low/60 m-space-md rounded-xl"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcFU7NBGqo33XHkct5tG7CTU_mLCr_Cqhh4UCn-uoe8as8hd4CM9IGrFs0mBLS7-ThAikKBPg7Ovh659wisn0anDcuAoLhUYkXu6tPM-WlAce_moHlHheh6-lRYn6SCAIgCqJ5jqb1t_PUJhWQdbpZRNoRszIhtRpAMme1hGGFrSsAItBMHvGCr366ZGWt5Em6h42a5J4e3QVDiICvcCgSNJVpDzE82O8U3P2Rkww"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Siti Rahayu, S.H.</span><span class="font-label-sm text-label-sm text-secondary truncate">Panmud Hukum</span></div></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-20 bg-surface-white/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs font-label-md text-label-md text-secondary"><span class="material-symbols-outlined text-base">gavel</span><span>Direktorat Jenderal Badan Peradilan Umum</span></div></div><div class="flex items-center gap-space-md"><button class="inline-flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-[0_1px_3px_rgba(15,23,42,0.06)] hover:bg-surface-container hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-seal-gold text-lg">qr_code_scanner</span><span>Scan QR Sidang</span></button><button aria-label="Pemberitahuan Berkas" class="relative p-space-sm rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error text-on-error font-label-sm text-label-sm">3</span></button><div class="flex items-center gap-space-sm pl-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcFU7NBGqo33XHkct5tG7CTU_mLCr_Cqhh4UCn-uoe8as8hd4CM9IGrFs0mBLS7-ThAikKBPg7Ovh659wisn0anDcuAoLhUYkXu6tPM-WlAce_moHlHheh6-lRYn6SCAIgCqJ5jqb1t_PUJhWQdbpZRNoRszIhtRpAMme1hGGFrSsAItBMHvGCr366ZGWt5Em6h42a5J4e3QVDiICvcCgSNJVpDzE82O8U3P2Rkww"/><div class="flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface leading-tight">Siti Rahayu, S.H.</span><span class="font-label-sm text-label-sm text-secondary">NIP. 19780415 200312 2 002</span></div></div></div></header><main class="relative pt-20 bg-surface w-full px-gutter min-h-screen"><div class="flex flex-col w-full pb-space-2xl space-y-space-xl">
+<!-- Top Ambient Banner & Executive Header -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-lg">
+<div class="space-y-space-xs max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm text-seal-gold" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span>MODUL KEWENANGAN YUDISIAL • BSrE BSSN TTE COMPLIANT</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Ruang Otorisasi &amp; Pengesahan Surat Kuasa Digital</h1>
+<p class="font-body-md text-body-md text-secondary">
+          Pejabat Penanda Tangan Aktif: <strong class="text-on-surface font-medium">Siti Rahayu, S.H.</strong> (Panitera Muda Hukum — NIP. 19780512 200212 2 001)
+        </p>
+</div>
+<!-- Action Tally Cards -->
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-3.5 px-space-md py-3 rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-lg bg-status-pending-bg text-status-pending-text flex items-center justify-center font-headline-sm">
+<span class="material-symbols-outlined text-xl">pending_actions</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">3 Berkas</div>
+<div class="font-label-sm text-label-sm text-secondary">Siap Disahkan Hari Ini</div>
+</div>
+</div>
+<div class="flex items-center gap-3.5 px-space-md py-3 rounded-xl bg-status-sah-bg/60">
+<div class="w-10 h-10 rounded-lg bg-status-sah-bg text-status-sah-text flex items-center justify-center font-headline-sm">
+<span class="material-symbols-outlined text-xl">verified</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-status-sah-text">18 Berkas</div>
+<div class="font-label-sm text-label-sm text-status-sah-text/80">Telah Diberi Nomor Register</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Workspace 12-Column Split Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT PANEL: Queues & Case Detail Summary (5 Columns) -->
+<div class="lg:col-span-5 space-y-space-md">
+<!-- Docket Navigation Strip -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Antrean Otorisasi Panmud</span>
+<span class="px-2 py-0.5 rounded-full bg-status-pending-bg text-status-pending-text font-label-sm text-label-sm font-semibold">Prioritas Sidang</span>
+</div>
+<!-- Queue Item List mini -->
+<div class="space-y-2">
+<!-- Active Queue Item -->
+<div class="p-space-sm rounded-lg bg-primary-container/10 flex items-center justify-between cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">task_alt</span>
+<div>
+<div class="font-code-register text-body-md text-primary font-bold">EKU-20261113-0042</div>
+<div class="font-body-sm text-body-sm text-secondary">45/Pdt.G/2026/PN.Bdg • Perdata Gugatan</div>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm">Aktif</span>
+</div>
+<!-- Secondary Pending Items -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<div>
+<div class="font-code-register text-body-md text-on-surface font-semibold">EKU-20261113-0043</div>
+<div class="font-body-sm text-body-sm text-secondary">112/Pdt.P/2026/PN.Bdg • Permohonan</div>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm">Antrean 2</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<div>
+<div class="font-code-register text-body-md text-on-surface font-semibold">EKU-20261113-0045</div>
+<div class="font-body-sm text-body-sm text-secondary">88/Pid.B/2026/PN.Bdg • Pidana Khusus</div>
+</div>
+</div>
+<span class="px-2 py-1 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm">Antrean 3</span>
+</div>
+</div>
+</div>
+<!-- Legal Summary & PTSP Clearance Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
+<!-- Case Header -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Nomor Tiket Permohonan</span>
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+</div>
+<div class="font-code-register text-headline-sm text-primary">EKU-20261113-0042</div>
+</div>
+<!-- LockService Safe Counter Alert -->
+<div class="rounded-xl bg-status-pending-bg/50 p-space-md space-y-1">
+<div class="flex items-center gap-2 text-status-pending-text font-label-sm text-label-sm uppercase font-bold">
+<span class="material-symbols-outlined text-base">lock_clock</span>
+<span>Alokasi Register Otomatis (LockService Secure)</span>
+</div>
+<div class="font-code-register text-headline-sm text-on-surface font-bold tracking-tight">
+            142/HK.02/SK/XI/2026/PN.Bdg
+          </div>
+<p class="font-body-sm text-body-sm text-status-pending-text/90">
+            Nomor unik ini terreservasi di Cloud Ledger dan akan terkunci permanen begitu TTE disahkan.
+          </p>
+</div>
+<!-- Metadata Matrix -->
+<div class="space-y-space-sm">
+<div class="bg-surface-container-low rounded-lg p-3 space-y-1">
+<div class="font-label-sm text-label-sm text-secondary uppercase">Nomor Registrasi Perkara Terkait</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">45/Pdt.G/2026/PN.Bdg</div>
+<div class="font-body-sm text-body-sm text-outline">Klasifikasi: Perkara Perdata Gugatan (Komersial)</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Pihak Pemberi Kuasa</span>
+<p class="font-label-md text-label-md text-on-surface">PT Graha Abadi Sentosa</p>
+<p class="font-body-sm text-body-sm text-outline">Direktur Utama: Ir. Hendra Setiawan</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Penerima Kuasa (Advokat)</span>
+<p class="font-label-md text-label-md text-on-surface">Faisal Hendrawan, S.H., M.H.</p>
+<p class="font-body-sm text-body-sm text-outline">KTA PERADI: 14.09281 / DPC Bandung</p>
+</div>
+</div>
+<!-- PTSP Verifier Verification Details -->
+<div class="rounded-lg bg-status-sah-bg/40 p-3 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-status-sah-text font-bold uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">check_circle</span>
+                Validasi Fisik &amp; PTSP Hukum
+              </span>
+<span class="font-label-sm text-label-sm text-status-sah-text">08:35 WIB</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface">
+              Status: <strong class="text-status-sah-text">Lengkap &amp; Lolos Verifikasi</strong>
+</div>
+<div class="font-body-sm text-body-sm text-secondary">
+              Petugas Meja Verifikator: <span class="font-medium text-on-surface">Budi Santoso, A.Md.</span> (Staf Panmud Hukum)
+            </div>
+<div class="flex items-center gap-2 pt-1 font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-sm text-seal-gold">attachment</span>
+<span>3 Berkas: Surat Kuasa Asli (.pdf), KTA Advokat (.jpg), Berita Acara Sumpah PT (.pdf)</span>
+</div>
+</div>
+</div>
+<!-- Quick Reference Action Row -->
+<div class="flex items-center justify-between pt-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-base">history_edu</span>
+<span>Log Riwayat Permohonan</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-status-revision-bg hover:bg-status-revision-border/30 text-status-revision-text font-label-md text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-base">assignment_return</span>
+<span>Kembalikan / Revisi</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: Official Certificate Deed Preview & TTE Dialog (7 Columns) -->
+<div class="lg:col-span-7 space-y-space-md">
+<!-- Certificate Sheet Preview Card (Formal Legal Deed View) -->
+<div class="bg-surface-white rounded-xl shadow-md p-space-xl relative overflow-hidden">
+<!-- Institutional Watermark Emblem Backdrop -->
+<div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+<svg class="w-96 h-96 fill-current text-primary" viewbox="0 0 200 200">
+<path d="M100 15 L175 45 L175 110 C175 155 100 190 100 190 C100 190 25 155 25 110 L25 45 Z"></path>
+</svg>
+</div>
+<div class="relative space-y-space-lg">
+<!-- Official Kop Garuda / Mahkamah Agung & Pengadilan Negeri Bandung -->
+<div class="flex flex-col items-center text-center space-y-1.5 pb-space-sm">
+<div class="w-14 h-14 mb-1 flex items-center justify-center">
+<svg class="w-14 h-14" fill="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<!-- Shield Base -->
+<path d="M50 8 L85 24 V56 C85 76 50 92 50 92 C50 92 15 76 15 56 V24 L50 8Z" fill="#003527" stroke="#F59E0B" stroke-width="2"></path>
+<!-- Scale of Justice -->
+<path d="M50 26 V66 M35 34 H65 M30 46 L35 34 L40 46 H30 M60 46 L65 34 L70 46 H60" stroke="#F59E0B" stroke-linecap="round" stroke-width="2"></path>
+<!-- Star -->
+<polygon fill="#FDE68A" points="50,18 52,23 57,23 53,26 55,31 50,28 45,31 47,26 43,23 48,23"></polygon>
+</svg>
+</div>
+<div class="font-headline-sm text-headline-sm tracking-wider text-primary uppercase font-bold">PENGADILAN NEGERI BANDUNG KELAS I A KHUSUS</div>
+<div class="font-body-sm text-body-sm text-secondary max-w-md">
+              Jl. L.L.R.E. Martadinata No. 74-80, Citarum, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40115
+            </div>
+<div class="w-full h-1 bg-primary rounded-full mt-2"></div>
+<div class="w-full h-0.5 bg-seal-gold rounded-full -mt-1"></div>
+</div>
+<!-- Title Deed -->
+<div class="text-center space-y-1">
+<span class="font-label-sm text-label-sm font-semibold tracking-widest text-primary uppercase">Kepaniteraan Hukum</span>
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight font-bold">
+              Akta Pendaftaran &amp; Legalisasi Surat Kuasa
+            </h2>
+<div class="inline-block px-3 py-1 bg-surface-container-low rounded font-code-register text-label-lg text-primary font-bold">
+              Nomor: 142/HK.02/SK/XI/2026/PN.Bdg
+            </div>
+</div>
+<!-- Formal Legal Attestation Paragraph -->
+<div class="space-y-3 text-justify font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p>
+              Pada hari ini, <strong class="text-on-surface">Kamis, 13 November 2026</strong>, bertempat di Kantor Kepaniteraan Pengadilan Negeri Bandung Kelas I A Khusus, telah didaftarkan dan dilegalisasi dalam Buku Register Elektronik Khusus Surat Kuasa untuk perkara perdata gugatan dengan register perkara:
+            </p>
+<div class="p-space-md rounded-lg bg-surface-container-low space-y-2">
+<div class="grid grid-cols-3 gap-2 font-body-sm text-body-sm">
+<span class="text-secondary font-medium">Nomor Perkara</span>
+<span class="col-span-2 text-on-surface font-semibold">: 45/Pdt.G/2026/PN.Bdg</span>
+</div>
+<div class="grid grid-cols-3 gap-2 font-body-sm text-body-sm">
+<span class="text-secondary font-medium">Pemberi Kuasa</span>
+<span class="col-span-2 text-on-surface">: PT Graha Abadi Sentosa</span>
+</div>
+<div class="grid grid-cols-3 gap-2 font-body-sm text-body-sm">
+<span class="text-secondary font-medium">Penerima Kuasa</span>
+<span class="col-span-2 text-on-surface font-semibold">: Faisal Hendrawan, S.H., M.H.</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">
+              Surat Kuasa ini telah diteliti keaslian serta kelengkapan administratifnya dan dinyatakan memenuhi syarat formil beracara sesuai Surat Edaran Mahkamah Agung (SEMA) No. 6 Tahun 1994 juncto PERMA No. 7 Tahun 2022 tentang Administrasi Perkara dan Persidangan Secara Elektronik.
+            </p>
+</div>
+<!-- Digital Seal & Court Signature Box -->
+<div class="pt-space-sm grid grid-cols-1 sm:grid-cols-2 gap-space-md items-end">
+<!-- QR Cryptographic Verification Box -->
+<div class="p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+<div class="w-20 h-20 bg-surface-white rounded-lg p-1.5 flex items-center justify-center shrink-0 shadow-sm">
+<!-- High-contrast simulated SVG QR Code -->
+<svg class="w-full h-full fill-current text-on-surface" viewbox="0 0 100 100">
+<path d="M10 10h30v30h-30z M15 15v20h20v-20z M20 20h10v10h-10z M60 10h30v30h-30z M65 15v20h20v-20z M70 20h10v10h-10z M10 60h30v30h-30z M15 65v20h20v-20z M20 70h10v10h-10z M45 10h10v10h-10z M45 25h10v10h-10z M45 45h10v10h-10z M25 45h15v10h-15z M60 45h15v10h-15z M80 45h10v10h-10z M45 60h10v20h-10z M60 60h10v10h-10z M75 60h15v10h-15z M60 75h15v15h-15z M80 80h10v10h-10z"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-status-sah-text font-bold">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+                  TTE Terverifikasi
+                </span>
+<p class="font-code-register text-body-sm text-outline truncate max-w-[150px]">
+                  HASH: 9e8f4a21...bd02
+                </p>
+<p class="font-body-sm text-body-sm text-secondary">
+                  Pindai untuk validasi dokumen di sidang
+                </p>
+</div>
+</div>
+<!-- Judicial Officer Stamp Box -->
+<div class="text-center sm:text-right space-y-1">
+<span class="font-body-sm text-body-sm text-secondary">Bandung, 13 November 2026</span>
+<div class="font-label-md text-label-md text-on-surface font-semibold">An. KETUA PENGADILAN NEGERI BANDUNG</div>
+<div class="font-label-sm text-label-sm text-secondary">PANITERA MUDA HUKUM</div>
+<!-- Digital Seal Graphic Preview -->
+<div class="py-2 flex items-center justify-center sm:justify-end gap-2">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-status-sah-bg/60 text-status-sah-text">
+<span class="material-symbols-outlined text-seal-gold text-lg" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider">Ditandatangani Secara Elektronik</span>
+</div>
+</div>
+<div class="font-headline-sm text-headline-sm text-primary font-bold underline decoration-seal-gold decoration-2 underline-offset-4">
+                SITI RAHAYU, S.H.
+              </div>
+<div class="font-code-register text-body-sm text-secondary">NIP. 19780512 200212 2 001</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TTE Authorization Security Box (Execution Chamber) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-seal-gold text-2xl" style="font-variation-settings: 'FILL' 1;">key</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Otorisasi Tanda Tangan Elektronik (TTE)</h3>
+<p class="font-body-sm text-body-sm text-secondary">Masukkan 6-digit Passkey Otorisasi Sertifikat Elektronik BSrE</p>
+</div>
+</div>
+<!-- Biometric Key Switcher -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-all" id="biometric-btn" type="button">
+<span class="material-symbols-outlined text-primary text-base">fingerprint</span>
+<span>Gunakan Passkey / FIDO2</span>
+</button>
+</div>
+<!-- 6-Digit PIN Slot Display -->
+<div class="flex flex-col items-center justify-center space-y-3 py-2">
+<div class="flex items-center gap-3">
+<input class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-container-low text-primary focus:bg-surface-white focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" maxlength="1" readonly="" type="password" value="8"/>
+<input class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-container-low text-primary focus:bg-surface-white focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" maxlength="1" readonly="" type="password" value="4"/>
+<input class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-container-low text-primary focus:bg-surface-white focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" maxlength="1" readonly="" type="password" value="1"/>
+<input class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-container-low text-primary focus:bg-surface-white focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" maxlength="1" readonly="" type="password" value="9"/>
+<input autofocus="" class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-white text-primary border-2 border-primary shadow-sm focus:outline-none" maxlength="1" placeholder="•" type="password"/>
+<input class="w-12 h-14 text-center font-headline-lg text-headline-lg rounded-lg bg-surface-container-low text-primary focus:bg-surface-white focus:outline-none shadow-sm" maxlength="1" placeholder="•" type="password"/>
+</div>
+<span class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-status-sah-text">lock</span>
+            Tersambung ke Token Kriptografi Mahkamah Agung v4.2
+          </span>
+</div>
+<!-- Major Action Button: Sahkan & Bubuhkan TTE -->
+<div class="space-y-3">
+<button class="w-full flex items-center justify-center gap-3 px-space-lg py-4 rounded-xl bg-primary text-on-primary font-headline-sm text-headline-sm font-bold shadow-md hover:bg-primary-container transition-all group" id="btn-submit-tte" type="button">
+<span class="material-symbols-outlined text-seal-gold text-2xl group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span>Sahkan &amp; Bubuhkan Tanda Tangan Elektronik</span>
+<span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="rounded-lg bg-surface-container-low p-3 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-seal-gold text-base shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-body-sm text-secondary leading-snug">
+<strong>Catatan Prosedural:</strong> Sistem akan mengunci nomor register, menyematkan QR code anti-pemalsuan, dan mengirimkan notifikasi instan berupa Akta Legalisasi PDF resmi ke email &amp; WhatsApp pemohon.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Demo Notification Toast (Hidden by default) -->
+<div class="fixed bottom-6 right-6 hidden z-50 flex items-center gap-3 px-5 py-4 rounded-xl bg-primary text-on-primary shadow-2xl transition-all transform translate-y-2" id="toast-success">
+<span class="material-symbols-outlined text-seal-gold text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<div class="font-label-lg text-label-lg font-bold">Akta Kuasa Berhasil Disahkan!</div>
+<div class="font-body-sm text-body-sm text-on-primary-container">Nomor 142/HK.02/SK/XI/2026/PN.Bdg telah resmi terdaftar.</div>
+</div>
+</div>
+<script>
+    (function() {
+      const btnSubmit = document.getElementById('btn-submit-tte');
+      const toast = document.getElementById('toast-success');
+      const bioBtn = document.getElementById('biometric-btn');
+
+      if (btnSubmit) {
+        btnSubmit.addEventListener('click', function() {
+          const originalContent = btnSubmit.innerHTML;
+          btnSubmit.disabled = true;
+          btnSubmit.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-seal-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Memproses Kriptografi BSrE...</span>
+          `;
+
+          setTimeout(function() {
+            btnSubmit.innerHTML = originalContent;
+            btnSubmit.disabled = false;
+            if (toast) {
+              toast.classList.remove('hidden');
+              toast.classList.remove('translate-y-2');
+              setTimeout(function() {
+                toast.classList.add('hidden');
+              }, 4000);
+            }
+          }, 1200);
+        });
+      }
+
+      if (bioBtn) {
+        bioBtn.addEventListener('click', function() {
+          bioBtn.classList.add('bg-primary', 'text-on-primary');
+          setTimeout(function() {
+            bioBtn.classList.remove('bg-primary', 'text-on-primary');
+          }, 800);
+        });
+      }
+    })();
+  </script>
+</div></main></div></body></html>
