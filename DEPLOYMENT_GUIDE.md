@@ -166,10 +166,21 @@ Untuk memastikan seluruh modul berfungsi sempurna, lakukan simulasi skenario ber
 5. **Alur Pengujian Sidang (Scan QR Code)**:
    - Klik tombol **Scan QR Sidang** di pojok kanan atas navbar.
    - Tampilan akan langsung berganti ke antarmuka kilat mobile ruang sidang, menampilkan status: **"DOKUMEN RESMI TERDAFTAR - KEABSAHAN TERKONFIRMASI 100% DI PERSIDANGAN"**.
-6. **Alur Pusat Pengaturan (Master CRUD)**:
-   - Masuk ke tab **Pengaturan Master**.
+6. **Alur Pengujian Mode Rules & Matriks Izin (RBAC)**:
+   - Di navbar bagian kanan atas, klik dropdown **Peran**.
+   - Coba ganti peran menjadi **"👤 Pemohon Publik / Advokat"**.
+   - Perhatikan bahwa menu internal (Meja Verifikator, Otorisasi Panitera, Pengaturan Master) otomatis dibatasi atau menampilkan halaman pemberitahuan **"Akses Terbatas: Menu Dibatasi oleh Rules Sistem"**.
+   - Beralih kembali ke **"👑 Super Admin"**.
+   - Buka tab **Pengaturan Master** > sub-tab **"Aturan & Kebijakan Dashboard"**.
+   - Anda dapat menyalakan/mematikan aturan seperti: Wajib Setoran PNBP, Alur Verifikasi Dua Lapis, Proteksi PIN TTE, batas waktu perbaikan berkas, dan Mode Pemeliharaan.
+   - Buka sub-tab **"Matriks Izin Role (RBAC)"** untuk menyesuaikan hak akses per menu bagi setiap peran.
+   - Buka sub-tab **"Manajemen Pengguna Staf"** untuk menambah atau menonaktifkan akun staf internal.
+
+7. **Alur Pusat Pengaturan (Master CRUD & Format Register)**:
+   - Masuk ke tab **Pengaturan Master** > sub-tab **Pejabat Penanda Tangan**.
    - Tambah pejabat penanda tangan baru lewat tombol **+ Tambah Pejabat Baru**.
-   - Uji penyesuaian pola penomoran register dan amati live preview penomoran akta.
-7. **Alur Ekspor Buku Register**:
+   - Masuk ke sub-tab **Format Nomor Register** untuk menyesuaikan pola penomoran register dan amati live preview penomoran akta.
+
+8. **Alur Ekspor Buku Register**:
    - Masuk ke tab **Buku Register & Statistik**.
    - Klik **Ekspor CSV/Excel** untuk mengunduh rekapitulasi data pendaftaran ke file spreadsheet.

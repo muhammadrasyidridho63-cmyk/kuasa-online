@@ -171,6 +171,15 @@ function dispatchAction(action, params, data) {
     case 'saveMasterData':
       return handleSaveMasterData(data);
 
+    case 'getSystemRules':
+      return handleGetSystemRules();
+
+    case 'saveSystemRules':
+      return handleSaveSystemRules(data);
+
+    case 'saveStaffUser':
+      return handleSaveStaffUser(data);
+
     case 'verifikasiQRSidang':
       return handleVerifikasiQRSidang(params.token || data.token);
 
@@ -593,6 +602,7 @@ function handleGetMasterData() {
   const masterPejabat = getSheetDataMap('MASTER_PEJABAT');
   const masterJenis = getSheetDataMap('MASTER_JENIS_KUASA');
   const masterPengguna = getSheetDataMap('MASTER_PENGGUNA');
+  const masterRules = getSheetDataMap('MASTER_RULES');
   const instansiRows = getSheetDataMap('PENGATURAN_INSTANSI');
   const auditLogs = getSheetDataMap('LOG_AUDIT').slice(-20);
 
@@ -602,10 +612,90 @@ function handleGetMasterData() {
       pejabat: masterPejabat,
       jenisKuasa: masterJenis,
       pengguna: masterPengguna,
+      rules: masterRules,
       instansi: instansiRows.length > 0 ? instansiRows[0] : {},
       logs: auditLogs.reverse()
     }
   };
+}
+
+/**
+ * Mendapatkan Kebijakan & Matriks Rules Dashboard
+ */
+function handleGetSystemRules() {
+  const cached = CacheX.get('system_rules');
+  if (cached) return { success: true, data: cached, cached: true };
+
+  const rulesList = getSheetDataMap('MASTER_RULES');
+  const penggunaList = getSheetDataMap('MASTER_PENGGUNA');
+  const result = {
+    rules: rulesList,
+    pengguna: penggunaList
+  };
+
+  CacheX.put('system_rules', result, 600);
+  return { success: true, data: result };
+}
+
+/**
+ * Menyimpan Kebijakan & Aturan Dashboard (Rules Mode Admin)
+ */
+function handleSaveSystemRules(data) {
+  if (!data || !data.rules) {
+    return { success: false, message: 'Data konfigurasi rules tidak lengkap.' };
+  }
+
+  const ss = getSS();
+  const sh = ss.getSheetByName('MASTER_RULES');
+  if (!sh) return { success: false, message: 'Sheet MASTER_RULES tidak ditemukan.' };
+
+  const rows = sh.getDataRange().getValues();
+  const ruleEntries = Object.keys(data.rules);
+
+  // Perbarui nilai pada baris yang cocok berdasarkan Kunci_Konfigurasi (kolom D / index 3)
+  for (let r = 1; r < rows.length; r++) {
+    const key = rows[r][3];
+    if (data.rules[key] !== undefined) {
+      sh.getRange(r + 1, 5).setValue(String(data.rules[key]));
+    }
+  }
+
+  // Catat Audit Log
+  const shLog = ss.getSheetByName('LOG_AUDIT');
+  if (shLog) {
+    const now = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm:ss');
+    shLog.appendRow([now, data.adminEmail || 'admin@pn-bandung.go.id', 'UPDATE_RULES', 'MASTER_RULES', 'Admin memperbarui kebijakan dashboard']);
+  }
+
+  CacheX.del('system_rules');
+  CacheX.del('public_config');
+
+  return { success: true, message: 'Seluruh kebijakan & aturan dashboard berhasil disimpan!' };
+}
+
+/**
+ * Tambah / Edit Pengguna Staf PTSP
+ */
+function handleSaveStaffUser(data) {
+  if (!data || !data.nama || !data.email) {
+    return { success: false, message: 'Nama dan email staf wajib diisi.' };
+  }
+
+  const ss = getSS();
+  const sh = ss.getSheetByName('MASTER_PENGGUNA');
+  if (!sh) return { success: false, message: 'Sheet MASTER_PENGGUNA tidak ditemukan.' };
+
+  const newId = 'USR-' + ('00' + (sh.getLastRow())).slice(-3);
+  sh.appendRow([
+    newId,
+    data.nama,
+    data.email,
+    data.peran || 'Verifikator PTSP',
+    data.statusAktif || 'Ya'
+  ]);
+
+  CacheX.del('system_rules');
+  return { success: true, message: 'Akun staf baru berhasil didaftarkan.' };
 }
 
 /**

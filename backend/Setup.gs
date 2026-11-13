@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * E-KUASA SETUP ENVIRONMENT (setup.gs)
- * Inisialisasi Idempoten: Drive Folder + Google Spreadsheet + Seed Master Data
+ * Inisialisasi Idempoten: Drive Folder + Google Spreadsheet + Seed Master Data & Rules
  * Sesuai panduan: gas-pro-api, gas-rahasia-script-properties, & gas-scale-turbo
  * ============================================================================
  */
@@ -75,6 +75,10 @@ function setupAppEnvironment() {
     'ID_User', 'Nama_Petugas', 'Email_Google', 'Peran', 'Status_Aktif'
   ]);
 
+  initSheetWithHeaders_(ss, 'MASTER_RULES', [
+    'ID_Rule', 'Kategori', 'Nama_Aturan', 'Kunci_Konfigurasi', 'Nilai', 'Tipe_Data', 'Deskripsi'
+  ]);
+
   initSheetWithHeaders_(ss, 'PENGATURAN_INSTANSI', [
     'ID_Setting', 'Nama_Pengadilan', 'Alamat', 'Pola_Nomor_Register', 'Counter_Terakhir', 'Reset_Tahunan_Otomatis', 'Redaksi_Klausul'
   ]);
@@ -132,7 +136,29 @@ function seedInitialData_(ss) {
     shJenis.appendRow(['JNS-03', 'Jaksa Pengacara Negara (JPN)', 10000, 'Surat Kuasa Khusus / SKK, Surat Tugas Kejaksaan', 'Mewakili Instansi Pemerintah']);
   }
 
-  // C. Seed Pengaturan Instansi & Format Register
+  // C. Seed Pengguna Staf Dashboard
+  const shPengguna = ss.getSheetByName('MASTER_PENGGUNA');
+  if (shPengguna.getLastRow() <= 1) {
+    shPengguna.appendRow(['USR-001', 'Administrator TI / PTIP', 'admin.ptip@pn-bandung.go.id', 'Super Admin', 'Ya']);
+    shPengguna.appendRow(['USR-002', 'Siti Rahayu, S.H.', 'siti.rahayu@pn-bandung.go.id', 'Panitera Muda Hukum', 'Ya']);
+    shPengguna.appendRow(['USR-003', 'Budi Santoso, A.Md.', 'budi.ptsp@pn-bandung.go.id', 'Verifikator PTSP', 'Ya']);
+    shPengguna.appendRow(['USR-004', 'Drs. H. Mulyadi, S.H., M.H.', 'mulyadi@pn-bandung.go.id', 'Panitera Pengadilan', 'Ya']);
+  }
+
+  // D. Seed Master Rules & Kebijakan Dashboard (RBAC & System Policies)
+  const shRules = ss.getSheetByName('MASTER_RULES');
+  if (shRules.getLastRow() <= 1) {
+    shRules.appendRow(['RUL-001', 'Kebijakan PNBP', 'Validasi Wajib Setoran PNBP Kas Negara', 'wajib_pnbp', 'true', 'boolean', 'Mewajibkan input NTPN dan verifikasi setoran Rp10.000 sebelum diteruskan ke Panitera']);
+    shRules.appendRow(['RUL-002', 'Alur Verifikasi', 'Pemeriksaan Meja PTSP Dua Lapis', 'dual_level_verif', 'true', 'boolean', 'Berkas wajib diverifikasi oleh staf PTSP sebelum masuk ke meja TTE Panitera']);
+    shRules.appendRow(['RUL-003', 'Keamanan Yudisial', 'Proteksi PIN Otorisasi TTE Panitera', 'pin_tte_wajib', 'true', 'boolean', 'Wajib memasukkan 6-digit PIN sebelum sistem menandatangani dan menerbitkan nomor register']);
+    shRules.appendRow(['RUL-004', 'Integrasi Notifikasi', 'Kirim Notifikasi WhatsApp Pemohon', 'notif_wa_aktif', 'true', 'boolean', 'Mengirim pesan otomatis saat berkas masuk, perlu revisi, atau telah disahkan']);
+    shRules.appendRow(['RUL-005', 'Integrasi Notifikasi', 'Kirim Salinan Akta ke Email', 'notif_email_aktif', 'true', 'boolean', 'Mengirimkan salinan PDF Akta Kuasa ber-QR langsung ke email pemohon']);
+    shRules.appendRow(['RUL-006', 'Batas Waktu', 'Batas Waktu Perbaikan Berkas (Hari)', 'batas_revisi_hari', '3', 'number', 'Batas waktu bagi advokat untuk merespons catatan revisi']);
+    shRules.appendRow(['RUL-007', 'Kapasitas Berkas', 'Maksimal Ukuran File Unggahan (MB)', 'maks_file_mb', '5', 'number', 'Batas ukuran file PDF/JPG per dokumen syarat']);
+    shRules.appendRow(['RUL-008', 'Status Layanan', 'Mode Pemeliharaan (Maintenance Mode)', 'maintenance_mode', 'false', 'boolean', 'Menutup sementara penerimaan permohonan baru untuk pemeliharaan server']);
+  }
+
+  // E. Seed Pengaturan Instansi & Format Register
   const shInstansi = ss.getSheetByName('PENGATURAN_INSTANSI');
   if (shInstansi.getLastRow() <= 1) {
     shInstansi.appendRow([
@@ -146,7 +172,7 @@ function seedInitialData_(ss) {
     ]);
   }
 
-  // D. Seed Data Sampel Transaksi di REG_KUASA
+  // F. Seed Data Sampel Transaksi di REG_KUASA
   const shReg = ss.getSheetByName('REG_KUASA');
   if (shReg.getLastRow() <= 1) {
     shReg.appendRow([

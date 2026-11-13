@@ -3,6 +3,7 @@
  * E-KUASA FRONTEND APPLICATION ENGINE (app.js)
  * Single Page Application (SPA) Reaktif & Zero-Delay Navigation
  * Sesuai panduan: gas-pro-api, gas-scale-turbo, gas-pwa-github
+ * DILENGKAPI: ADMIN SYSTEM RULES & ROLE-BASED ACCESS CONTROL (RBAC) ENGINE
  * ============================================================================
  */
 
@@ -134,11 +135,66 @@
     }
   ];
 
+  const defaultMasterStaf = [
+    {
+      id: 'USR-001',
+      nama: 'Administrator TI / PTIP',
+      email: 'admin.ptip@pn-bandung.go.id',
+      peran: 'Super Admin',
+      status: 'Aktif'
+    },
+    {
+      id: 'USR-002',
+      nama: 'Siti Rahayu, S.H.',
+      email: 'siti.rahayu@pn-bandung.go.id',
+      peran: 'Panitera Muda Hukum',
+      status: 'Aktif'
+    },
+    {
+      id: 'USR-003',
+      nama: 'Budi Santoso, A.Md.',
+      email: 'budi.ptsp@pn-bandung.go.id',
+      peran: 'Verifikator PTSP',
+      status: 'Aktif'
+    },
+    {
+      id: 'USR-004',
+      nama: 'Drs. H. Mulyadi, S.H., M.H.',
+      email: 'mulyadi@pn-bandung.go.id',
+      peran: 'Panitera Pengadilan',
+      status: 'Aktif'
+    }
+  ];
+
+  const defaultRbacMatrix = {
+    admin: ['portal-publik', 'lacak-dan-unduh', 'meja-verifikator-ptsp', 'otorisasi-panitera', 'pengaturan-master', 'buku-register-dan-statistik', 'scan-qr-sidang'],
+    panitera: ['portal-publik', 'lacak-dan-unduh', 'meja-verifikator-ptsp', 'otorisasi-panitera', 'buku-register-dan-statistik', 'scan-qr-sidang'],
+    verifikator: ['portal-publik', 'lacak-dan-unduh', 'meja-verifikator-ptsp', 'buku-register-dan-statistik', 'scan-qr-sidang'],
+    pemohon: ['portal-publik', 'lacak-dan-unduh', 'scan-qr-sidang'],
+    hakim: ['buku-register-dan-statistik', 'scan-qr-sidang', 'lacak-dan-unduh', 'portal-publik']
+  };
+
+  const defaultSystemRules = {
+    wajibPnbp: true,
+    dualLevelVerif: true,
+    pinTteProtection: true,
+    notifWa: true,
+    notifEmail: true,
+    maintenance: false,
+    batasRevisiHari: 3,
+    maxFileMb: 5
+  };
+
   let appState = {
     registrations: JSON.parse(localStorage.getItem('ekuasa_reg')) || defaultRegistrations,
     masterPejabat: JSON.parse(localStorage.getItem('ekuasa_pejabat')) || defaultMasterPejabat,
+    masterStaf: JSON.parse(localStorage.getItem('ekuasa_staf')) || defaultMasterStaf,
     formatNomor: localStorage.getItem('ekuasa_format_nomor') || '{NO}/HK.02/SK/{BULAN_ROMAWI}/{TAHUN}/PN.Bdg',
     counterTerakhir: parseInt(localStorage.getItem('ekuasa_counter') || '141', 10),
+    currentRole: localStorage.getItem('ekuasa_role') || 'admin',
+    rbacMatrix: JSON.parse(localStorage.getItem('ekuasa_rbac')) || defaultRbacMatrix,
+    systemRules: JSON.parse(localStorage.getItem('ekuasa_rules')) || defaultSystemRules,
+    masterActiveTab: 'rules', // 'rules' | 'rbac' | 'pejabat' | 'format' | 'pengguna'
     activeTab: 'portal-publik',
     activeVerifierId: 'EKU-20261113-0042',
     activeApproverId: 'EKU-20261113-0043',
@@ -148,8 +204,12 @@
   function saveState() {
     localStorage.setItem('ekuasa_reg', JSON.stringify(appState.registrations));
     localStorage.setItem('ekuasa_pejabat', JSON.stringify(appState.masterPejabat));
+    localStorage.setItem('ekuasa_staf', JSON.stringify(appState.masterStaf));
     localStorage.setItem('ekuasa_format_nomor', appState.formatNomor);
     localStorage.setItem('ekuasa_counter', String(appState.counterTerakhir));
+    localStorage.setItem('ekuasa_role', appState.currentRole);
+    localStorage.setItem('ekuasa_rbac', JSON.stringify(appState.rbacMatrix));
+    localStorage.setItem('ekuasa_rules', JSON.stringify(appState.systemRules));
   }
 
   // ==========================================================================
@@ -186,9 +246,21 @@
   }
 
   // ==========================================================================
-  // 3. ZERO-DELAY NAVIGATION & TAB SWITCHING
+  // 3. RBAC ENFORCEMENT & ZERO-DELAY NAVIGATION
   // ==========================================================================
+  function canAccessTab(role, tabId) {
+    if (role === 'admin') return true;
+    const allowed = appState.rbacMatrix[role] || [];
+    return allowed.includes(tabId);
+  }
+
   function switchTab(targetTabId) {
+    // Periksa apakah peran memiliki izin untuk tab target
+    if (targetTabId !== 'akses-dibatasi' && !canAccessTab(appState.currentRole, targetTabId)) {
+      showRestrictedView(targetTabId);
+      return;
+    }
+
     appState.activeTab = targetTabId;
 
     // Sembunyikan semua tab content
@@ -224,12 +296,99 @@
     } else if (targetTabId === 'buku-register-dan-statistik') {
       renderBukuRegister();
     } else if (targetTabId === 'pengaturan-master') {
-      renderMasterPejabat();
-      updatePatternPreview();
+      renderMasterTab(appState.masterActiveTab);
     }
 
     // Scroll ke atas dengan halus
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function showRestrictedView(targetTabId) {
+    document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+    const restrictedView = document.getElementById('view-akses-dibatasi');
+    const roleLabel = document.getElementById('restricted-role-name');
+    if (roleLabel) {
+      const roleMap = {
+        admin: 'Super Admin',
+        panitera: 'Panitera Muda Hukum',
+        verifikator: 'Verifikator PTSP',
+        pemohon: 'Pemohon Publik / Advokat',
+        hakim: 'Hakim Sidang'
+      };
+      roleLabel.textContent = roleMap[appState.currentRole] || appState.currentRole;
+    }
+    if (restrictedView) restrictedView.classList.remove('hidden');
+    showToast('Akses menu ditolak oleh Aturan Sistem (Rules RBAC)!', 'error');
+  }
+
+  function setRole(newRole) {
+    appState.currentRole = newRole;
+    saveState();
+
+    // Perbarui dropdown role selector jika ada
+    const roleSelector = document.getElementById('role-selector');
+    if (roleSelector) roleSelector.value = newRole;
+
+    // Perbarui profil tampilan di navbar
+    const userDisplayName = document.getElementById('user-display-name');
+    const userDisplayRole = document.getElementById('user-display-role');
+    const userAvatar = document.getElementById('user-avatar');
+
+    if (newRole === 'admin') {
+      if (userDisplayName) userDisplayName.textContent = 'Administrator TI / PTIP';
+      if (userDisplayRole) {
+        userDisplayRole.textContent = 'Super Admin (Rules Mode)';
+        userDisplayRole.className = 'text-[10px] text-amber-700 font-semibold';
+      }
+      if (userAvatar) userAvatar.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAcFU7NBGqo33XHkct5tG7CTU_mLCr_Cqhh4UCn-uoe8as8hd4CM9IGrFs0mBLS7-ThAikKBPg7Ovh659wisn0anDcuAoLhUYkXu6tPM-WlAce_moHlHheh6-lRYn6SCAIgCqJ5jqb1t_PUJhWQdbpZRNoRszIhtRpAMme1hGGFrSsAItBMHvGCr366ZGWt5Em6h42a5J4e3QVDiICvcCgSNJVpDzE82O8U3P2Rkww';
+    } else if (newRole === 'panitera') {
+      if (userDisplayName) userDisplayName.textContent = 'Siti Rahayu, S.H.';
+      if (userDisplayRole) {
+        userDisplayRole.textContent = 'Panitera Muda Hukum';
+        userDisplayRole.className = 'text-[10px] text-emerald-700 font-semibold';
+      }
+    } else if (newRole === 'verifikator') {
+      if (userDisplayName) userDisplayName.textContent = 'Budi Santoso, A.Md.';
+      if (userDisplayRole) {
+        userDisplayRole.textContent = 'Verifikator Meja PTSP';
+        userDisplayRole.className = 'text-[10px] text-blue-700 font-semibold';
+      }
+    } else if (newRole === 'pemohon') {
+      if (userDisplayName) userDisplayName.textContent = 'Faisal Hendrawan, S.H.';
+      if (userDisplayRole) {
+        userDisplayRole.textContent = 'Advokat / Pemohon Mandiri';
+        userDisplayRole.className = 'text-[10px] text-slate-500 font-semibold';
+      }
+    } else if (newRole === 'hakim') {
+      if (userDisplayName) userDisplayName.textContent = 'Dr. Hendra, S.H., M.H.';
+      if (userDisplayRole) {
+        userDisplayRole.textContent = 'Hakim Sidang Utama';
+        userDisplayRole.className = 'text-[10px] text-purple-700 font-semibold';
+      }
+    }
+
+    // Perbarui indikator izin pada navbar
+    updateNavPermissionsVisual();
+
+    // Jika tab aktif saat ini tidak diizinkan untuk peran baru, arahkan ke tab pertama yang diizinkan
+    if (!canAccessTab(newRole, appState.activeTab)) {
+      const allowed = appState.rbacMatrix[newRole] || ['portal-publik'];
+      switchTab(allowed[0]);
+    }
+
+    showToast('Mode peran aktif diubah menjadi: ' + newRole.toUpperCase(), 'info');
+  }
+
+  function updateNavPermissionsVisual() {
+    document.querySelectorAll('[data-nav-tab]').forEach(btn => {
+      const tabName = btn.getAttribute('data-nav-tab');
+      const isAllowed = canAccessTab(appState.currentRole, tabName);
+      if (isAllowed) {
+        btn.classList.remove('opacity-40', 'cursor-not-allowed');
+      } else {
+        btn.classList.add('opacity-40', 'cursor-not-allowed');
+      }
+    });
   }
 
   // ==========================================================================
@@ -238,7 +397,6 @@
   let currentStep = 1;
 
   function initPublicForm() {
-    // Navigasi Langkah Stepper
     document.querySelectorAll('[data-step-target]').forEach(stepBtn => {
       stepBtn.addEventListener('click', () => {
         const target = parseInt(stepBtn.getAttribute('data-step-target'), 10);
@@ -246,7 +404,6 @@
       });
     });
 
-    // Tombol Lanjut / Kembali
     const btnNext = document.getElementById('btn-step-next');
     const btnPrev = document.getElementById('btn-step-prev');
     if (btnNext) {
@@ -260,7 +417,6 @@
       });
     }
 
-    // Form Submit Final Permohonan
     const formDaftar = document.getElementById('form-pendaftaran-kuasa');
     if (formDaftar) {
       formDaftar.addEventListener('submit', (e) => {
@@ -295,6 +451,12 @@
   }
 
   function handleSubmitPermohonan() {
+    // Periksa apakah sistem dalam Mode Pemeliharaan (Rules Enforcement)
+    if (appState.systemRules.maintenance) {
+      showToast('Pendaftaran ditutup sementara: Mode Pemeliharaan Server sedang aktif!', 'warning');
+      return;
+    }
+
     const jenisKuasa = document.getElementById('input-jenis-kuasa')?.value || 'Kuasa Khusus Advokat';
     const nomorPerkara = document.getElementById('input-nomor-perkara')?.value || '45/Pdt.G/2026/PN.Bdg';
     const namaPemberi = document.getElementById('input-nama-pemberi')?.value || 'PT Maju Terus / Budi Santoso';
@@ -309,6 +471,9 @@
     const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '');
     const randNum = ('000' + Math.floor(Math.random() * 9000 + 1000)).slice(-4);
     const newId = 'EKU-' + dateStr + '-' + randNum;
+
+    // Evaluasi Aturan Dual-Level Verif (Rules Enforcement)
+    const initialStatus = appState.systemRules.dualLevelVerif ? 'Menunggu Verifikasi' : 'Siap Disahkan';
 
     const newEntry = {
       idPengajuan: newId,
@@ -326,7 +491,7 @@
       emailPemohon: emailPemohon,
       kodeBilling: kodeBilling,
       nominalPnbp: 10000,
-      status: 'Menunggu Verifikasi',
+      status: initialStatus,
       catatan: 'Dokumen baru masuk dari Portal Publik. Menunggu pemeriksaan verifikator.',
       tanggalSah: '',
       pejabatSah: '',
@@ -427,7 +592,6 @@
     if (filter === 'menunggu') items = items.filter(r => r.status === 'Menunggu Verifikasi');
     else if (filter === 'revisi') items = items.filter(r => r.status === 'Perlu Perbaikan');
 
-    // Update KPI counter
     const cMenunggu = appState.registrations.filter(r => r.status === 'Menunggu Verifikasi').length;
     const cRevisi = appState.registrations.filter(r => r.status === 'Perlu Perbaikan').length;
     const cDiteruskan = appState.registrations.filter(r => r.status === 'Siap Disahkan' || r.status === 'Terdaftar & Sah').length;
@@ -462,7 +626,6 @@
       `;
     }).join('');
 
-    // Listener klik item antrean
     queueList.querySelectorAll('[data-verifier-select]').forEach(el => {
       el.addEventListener('click', () => {
         const id = el.getAttribute('data-verifier-select');
@@ -477,7 +640,6 @@
     const item = appState.registrations.find(r => r.idPengajuan === id) || appState.registrations[0];
     if (!item) return;
 
-    // Header Detail
     const elId = document.getElementById('verif-detail-id');
     const elPerkara = document.getElementById('verif-detail-perkara');
     const elPemberi = document.getElementById('verif-detail-pemberi');
@@ -489,7 +651,6 @@
     if (elPenerima) elPenerima.textContent = item.namaPenerimaKuasa + ' (' + (item.organisasiAdvokat || 'Advokat') + ')';
     if (elPnbp) elPnbp.textContent = 'Rp 10.000 (NTPN: ' + item.kodeBilling + ')';
 
-    // Ganti konten pratinjau dokumen sesuai tab dokumen
     updateDocViewer(item);
   }
 
@@ -657,7 +818,6 @@
                  appState.registrations[0];
     if (!item) return;
 
-    // Alokasi Nomor Register Berikutnya
     const nextCounter = appState.counterTerakhir + 1;
     const now = new Date();
     const romawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
@@ -685,9 +845,12 @@
       return;
     }
 
-    if (pinEntered !== '123456') {
-      showToast('PIN Otorisasi TTE salah! (Gunakan 123456 untuk demo)', 'error');
-      return;
+    // Rules Enforcement: Proteksi PIN TTE
+    if (appState.systemRules.pinTteProtection) {
+      if (pinEntered !== '123456') {
+        showToast('PIN Otorisasi TTE salah! (Gunakan 123456 untuk demo)', 'error');
+        return;
+      }
     }
 
     // Bangun Nomor Register Resmi
@@ -709,11 +872,9 @@
 
     showToast('Surat Kuasa berhasil disahkan dengan TTE BSrE! Nomor Register: ' + noRegSah, 'success');
 
-    // Refresh UI
     renderApproverQueue();
     renderApproverDetail(item.idPengajuan);
 
-    // Buka dialog akta pengesahan sah
     setTimeout(() => {
       openModalAktaSah(item);
     }, 600);
@@ -732,8 +893,70 @@
   }
 
   // ==========================================================================
-  // 8. PENGATURAN MASTER DATA (CRUD FULL)
+  // 8. PENGATURAN MASTER DATA & RULES ENGINE
   // ==========================================================================
+  function renderMasterTab(tabName) {
+    appState.masterActiveTab = tabName;
+
+    // Toggle button subtab style
+    document.querySelectorAll('[data-master-tab]').forEach(btn => {
+      const name = btn.getAttribute('data-master-tab');
+      if (name === tabName) {
+        btn.classList.add('bg-primary', 'text-white');
+        btn.classList.remove('bg-slate-100', 'text-slate-700');
+      } else {
+        btn.classList.remove('bg-primary', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      }
+    });
+
+    // Toggle panel visibility
+    document.querySelectorAll('.master-panel').forEach(panel => {
+      panel.classList.add('hidden');
+    });
+
+    const activePanel = document.getElementById('master-panel-' + tabName);
+    if (activePanel) activePanel.classList.remove('hidden');
+
+    if (tabName === 'pejabat') renderMasterPejabat();
+    else if (tabName === 'format') updatePatternPreview();
+    else if (tabName === 'rules') syncRulesInputs();
+    else if (tabName === 'rbac') syncRbacCheckboxes();
+    else if (tabName === 'pengguna') renderMasterStaf();
+  }
+
+  function syncRulesInputs() {
+    const r = appState.systemRules;
+    const tPnbp = document.getElementById('rule-toggle-pnbp');
+    const tDual = document.getElementById('rule-toggle-dual-verif');
+    const tPin = document.getElementById('rule-toggle-pin-tte');
+    const tWa = document.getElementById('rule-toggle-notif-wa');
+    const tEmail = document.getElementById('rule-toggle-notif-email');
+    const tMaint = document.getElementById('rule-toggle-maintenance');
+    const iRevisi = document.getElementById('rule-input-batas-revisi');
+    const lRevisi = document.getElementById('label-batas-revisi');
+    const sMaxFile = document.getElementById('rule-select-max-file');
+
+    if (tPnbp) tPnbp.checked = r.wajibPnbp;
+    if (tDual) tDual.checked = r.dualLevelVerif;
+    if (tPin) tPin.checked = r.pinTteProtection;
+    if (tWa) tWa.checked = r.notifWa;
+    if (tEmail) tEmail.checked = r.notifEmail;
+    if (tMaint) tMaint.checked = r.maintenance;
+    if (iRevisi) iRevisi.value = r.batasRevisiHari;
+    if (lRevisi) lRevisi.textContent = r.batasRevisiHari + ' Hari';
+    if (sMaxFile) sMaxFile.value = String(r.maxFileMb);
+  }
+
+  function syncRbacCheckboxes() {
+    document.querySelectorAll('.rbac-chk').forEach(chk => {
+      const role = chk.getAttribute('data-role');
+      const mod = chk.getAttribute('data-mod');
+      const allowedList = appState.rbacMatrix[role] || [];
+      chk.checked = allowedList.includes(mod);
+    });
+  }
+
   function renderMasterPejabat() {
     const tbody = document.getElementById('table-master-pejabat-body');
     if (!tbody) return;
@@ -760,14 +983,12 @@
             <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${badgeClass}">${p.status}</span>
           </td>
           <td class="p-3 text-right space-x-1">
-            <button data-pejabat-edit="${p.id}" class="px-2 py-1 text-xs text-primary font-medium hover:bg-primary/10 rounded">Edit</button>
-            <button data-pejabat-toggle="${p.id}" class="px-2 py-1 text-xs text-slate-600 font-medium hover:bg-slate-100 rounded">Status</button>
+            <button data-pejabat-toggle="${p.id}" class="px-2 py-1 text-xs text-slate-600 font-medium hover:bg-slate-100 rounded border border-slate-200">Ganti Status</button>
           </td>
         </tr>
       `;
     }).join('');
 
-    // Toggle Status
     tbody.querySelectorAll('[data-pejabat-toggle]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-pejabat-toggle');
@@ -777,6 +998,43 @@
           saveState();
           renderMasterPejabat();
           showToast('Status ' + p.nama + ' diperbarui menjadi: ' + p.status, 'info');
+        }
+      });
+    });
+  }
+
+  function renderMasterStaf() {
+    const tbody = document.getElementById('table-master-staf-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = appState.masterStaf.map(u => `
+      <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+        <td class="p-3">
+          <div class="font-semibold text-slate-900">${u.nama}</div>
+          <div class="text-xs text-slate-400 font-mono">${u.id}</div>
+        </td>
+        <td class="p-3 text-xs font-mono text-slate-600">${u.email}</td>
+        <td class="p-3">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary/10 text-primary border border-primary/20">${u.peran}</span>
+        </td>
+        <td class="p-3">
+          <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">${u.status}</span>
+        </td>
+        <td class="p-3 text-right">
+          <button data-staf-toggle="${u.id}" class="px-2 py-1 text-xs text-slate-600 font-medium hover:bg-slate-100 rounded border border-slate-200">Toggle Status</button>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('[data-staf-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-staf-toggle');
+        const user = appState.masterStaf.find(x => x.id === id);
+        if (user) {
+          user.status = user.status === 'Aktif' ? 'Nonaktif' : 'Aktif';
+          saveState();
+          renderMasterStaf();
+          showToast('Status pengguna ' + user.nama + ' diperbarui: ' + user.status, 'info');
         }
       });
     });
@@ -825,10 +1083,12 @@
       </tr>
     `).join('');
 
-    // Update KPI
-    document.getElementById('stat-total-pengajuan').textContent = data.length;
-    document.getElementById('stat-total-sah').textContent = data.filter(x => x.status === 'Terdaftar & Sah').length;
-    document.getElementById('stat-total-pnbp').textContent = 'Rp ' + (data.filter(x => x.status === 'Terdaftar & Sah').length * 10000).toLocaleString('id-ID');
+    const statTotal = document.getElementById('stat-total-pengajuan');
+    const statSah = document.getElementById('stat-total-sah');
+    const statPnbp = document.getElementById('stat-total-pnbp');
+    if (statTotal) statTotal.textContent = data.length;
+    if (statSah) statSah.textContent = data.filter(x => x.status === 'Terdaftar & Sah').length;
+    if (statPnbp) statPnbp.textContent = 'Rp ' + (data.filter(x => x.status === 'Terdaftar & Sah').length * 10000).toLocaleString('id-ID');
   }
 
   function exportToCsv() {
@@ -869,7 +1129,16 @@
   // 11. GLOBAL INITIALIZATION & EVENT LISTENERS
   // ==========================================================================
   document.addEventListener('DOMContentLoaded', () => {
-    // Navigasi Tab Utama
+    // Inisialisasi Role Selector
+    const roleSelector = document.getElementById('role-selector');
+    if (roleSelector) {
+      roleSelector.value = appState.currentRole;
+      roleSelector.addEventListener('change', (e) => {
+        setRole(e.target.value);
+      });
+    }
+
+    // Inisialisasi Navigasi Tab Utama
     document.querySelectorAll('[data-nav-tab]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -949,7 +1218,7 @@
     const btnApproveTte = document.getElementById('btn-approve-tte');
     if (btnApproveTte) {
       btnApproveTte.addEventListener('click', () => {
-        if (pinBuffer.length === 0) pinBuffer = '123456'; // Default demo shortcut
+        if (pinBuffer.length === 0) pinBuffer = '123456';
         executeOtorisasiTTE(pinBuffer);
         pinBuffer = '';
         updatePinDots();
@@ -968,6 +1237,69 @@
         e.preventDefault();
         const q = document.getElementById('input-lacak-tiket')?.value;
         handleLacakDokumen(q);
+      });
+    }
+
+    // Sub-tab Pusat Pengaturan Master
+    document.querySelectorAll('[data-master-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.getAttribute('data-master-tab');
+        renderMasterTab(tab);
+      });
+    });
+
+    // Slider Batas Waktu Revisi
+    const sliderRevisi = document.getElementById('rule-input-batas-revisi');
+    const labelRevisi = document.getElementById('label-batas-revisi');
+    if (sliderRevisi && labelRevisi) {
+      sliderRevisi.addEventListener('input', (e) => {
+        labelRevisi.textContent = e.target.value + ' Hari';
+      });
+    }
+
+    // Simpan Rules Dashboard
+    const btnSimpanRules = document.getElementById('btn-simpan-rules');
+    if (btnSimpanRules) {
+      btnSimpanRules.addEventListener('click', () => {
+        appState.systemRules = {
+          wajibPnbp: document.getElementById('rule-toggle-pnbp')?.checked ?? true,
+          dualLevelVerif: document.getElementById('rule-toggle-dual-verif')?.checked ?? true,
+          pinTteProtection: document.getElementById('rule-toggle-pin-tte')?.checked ?? true,
+          notifWa: document.getElementById('rule-toggle-notif-wa')?.checked ?? true,
+          notifEmail: document.getElementById('rule-toggle-notif-email')?.checked ?? true,
+          maintenance: document.getElementById('rule-toggle-maintenance')?.checked ?? false,
+          batasRevisiHari: parseInt(document.getElementById('rule-input-batas-revisi')?.value || '3', 10),
+          maxFileMb: parseInt(document.getElementById('rule-select-max-file')?.value || '5', 10)
+        };
+        saveState();
+        showToast('Seluruh aturan & kebijakan dashboard berhasil disimpan!', 'success');
+      });
+    }
+
+    // Simpan Matriks RBAC
+    const btnSimpanRbac = document.getElementById('btn-simpan-rbac');
+    if (btnSimpanRbac) {
+      btnSimpanRbac.addEventListener('click', () => {
+        const matrix = {
+          admin: ['portal-publik', 'lacak-dan-unduh', 'meja-verifikator-ptsp', 'otorisasi-panitera', 'pengaturan-master', 'buku-register-dan-statistik', 'scan-qr-sidang'],
+          panitera: [],
+          verifikator: [],
+          pemohon: [],
+          hakim: []
+        };
+
+        document.querySelectorAll('.rbac-chk').forEach(chk => {
+          const role = chk.getAttribute('data-role');
+          const mod = chk.getAttribute('data-mod');
+          if (chk.checked && matrix[role]) {
+            matrix[role].push(mod);
+          }
+        });
+
+        appState.rbacMatrix = matrix;
+        saveState();
+        updateNavPermissionsVisual();
+        showToast('Matriks izin RBAC berhasil disimpan dan langsung diterapkan!', 'success');
       });
     }
 
@@ -1020,6 +1352,37 @@
       });
     }
 
+    // Modal Tambah Staf
+    const btnBukaTambahStaf = document.getElementById('btn-buka-tambah-staf');
+    const modalTambahStaf = document.getElementById('modal-tambah-staf');
+    if (btnBukaTambahStaf && modalTambahStaf) {
+      btnBukaTambahStaf.addEventListener('click', () => modalTambahStaf.classList.remove('hidden'));
+    }
+
+    const formTambahStaf = document.getElementById('form-tambah-staf');
+    if (formTambahStaf) {
+      formTambahStaf.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nama = document.getElementById('staf-input-nama')?.value;
+        const email = document.getElementById('staf-input-email')?.value;
+        const peran = document.getElementById('staf-input-peran')?.value;
+
+        if (nama && email) {
+          appState.masterStaf.push({
+            id: 'USR-' + ('00' + (appState.masterStaf.length + 1)).slice(-3),
+            nama: nama,
+            email: email,
+            peran: peran || 'Verifikator PTSP',
+            status: 'Aktif'
+          });
+          saveState();
+          modalTambahStaf.classList.add('hidden');
+          renderMasterStaf();
+          showToast('Akun staf ' + nama + ' berhasil didaftarkan!', 'success');
+        }
+      });
+    }
+
     // Tombol Ekspor CSV
     const btnExport = document.getElementById('btn-export-csv');
     if (btnExport) btnExport.addEventListener('click', exportToCsv);
@@ -1034,14 +1397,17 @@
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
-    // Tab Awal
+    // Set Role Awal & Tab Awal
+    setRole(appState.currentRole);
     switchTab('portal-publik');
   });
 
-  // Ekspor API internal untuk kebutuhan testing
+  // Ekspor API internal untuk kebutuhan testing & simulasi
   window.E_KUASA = {
     getState: () => appState,
     switchTab: switchTab,
+    setRole: setRole,
+    renderMasterTab: renderMasterTab,
     openQrSidangVerification: openQrSidangVerification
   };
 })();
